@@ -1,3 +1,18 @@
 {
-  "levels": []
+  "levels": [
+    {
+      "id": "rev-auth-v1",
+      "name": "多层签名逆向",
+      "path": "directions/reverse/shopplus/user/orders/index.html",
+      "category": "JS逆向",
+      "difficulty": "中-高"
+    },
+    {
+      "id": "rev-notecloud-v2",
+      "name": "NoteCloud 笔记同步",
+      "path": "directions/reverse/notecloud/index.html",
+      "category": "JS逆向",
+      "difficulty": "中-高"
+    }
+  ]
 }

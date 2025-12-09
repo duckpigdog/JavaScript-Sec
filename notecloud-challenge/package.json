@@ -1,0 +1,18 @@
+{
+  "name": "notecloud-challenge",
+  "version": "1.0.0",
+  "description": "NoteCloud JavaScript Reverse Engineering Challenge - Level 2",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node test_signature.js"
+  },
+  "keywords": ["javascript", "reverse-engineering", "challenge", "notecloud"],
+  "author": "Challenge Creator",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}

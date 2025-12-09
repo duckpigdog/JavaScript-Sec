@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ShopPlus · 订单中心</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../../../assets/css/style.css" />
+    <link rel="stylesheet" href="./shopplus.css" />
+  </head>
+  <body>
+    <!-- 头部导航栏 -->
+    <header class="navbar">
+      <div class="nav-container">
+        <!-- Logo区域 -->
+        <div class="nav-brand">
+          <div class="logo">
+            <i class="fas fa-shopping-bag"></i>
+          </div>
+          <div class="brand-info">
+            <h1>ShopPlus</h1>
+            <span class="tagline">专业电商平台</span>
+          </div>
+        </div>
+
+        <!-- 搜索框 -->
+        <div class="nav-search">
+          <div class="search-box">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" placeholder="搜索商品、订单..." class="search-input">
+            <button class="search-btn">搜索</button>
+          </div>
+        </div>
+
+        <!-- 用户菜单 -->
+        <div class="nav-user">
+          <div class="user-avatar" id="userAvatar">
+            <img src="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20user%20avatar%20icon%20circular%20design%20with%20initials%20SP%20blue%20gradient%20background%20minimalist%20style&image_size=square" alt="用户头像">
+            <span class="username">用户10001</span>
+            <i class="fas fa-chevron-down dropdown-icon"></i>
+          </div>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-user"></i>
+              个人中心
+            </a>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-shopping-cart"></i>
+              我的订单
+            </a>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-heart"></i>
+              收藏夹
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-sign-out-alt"></i>
+              退出登录
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+      <div class="container">
+        <!-- 页面标题 -->
+        <div class="page-header">
+          <div class="page-title">
+            <h2>订单管理中心</h2>
+            <p>查看和管理您的所有订单信息</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-secondary" id="refreshBtn">
+              <i class="fas fa-sync-alt"></i>
+              刷新数据
+            </button>
+            <button class="btn btn-primary" id="exportBtn">
+              <i class="fas fa-download"></i>
+              导出订单
+            </button>
+          </div>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="stats-cards">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="stat-content">
+              <h3>总订单数</h3>
+              <p class="stat-number" id="totalOrders">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="stat-content">
+              <h3>总销售额</h3>
+              <p class="stat-number" id="totalRevenue">¥0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-content">
+              <h3>已完成</h3>
+              <p class="stat-number" id="completedOrders">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-content">
+              <h3>处理中</h3>
+              <p class="stat-number" id="pendingOrders">0</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 筛选栏 -->
+        <div class="filter-bar">
+          <div class="filter-group">
+            <label>时间筛选：</label>
+            <select class="filter-select" id="timeFilter">
+              <option value="all">全部时间</option>
+              <option value="today">今天</option>
+              <option value="week">本周</option>
+              <option value="month">本月</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>订单状态：</label>
+            <select class="filter-select" id="statusFilter">
+              <option value="all">全部状态</option>
+              <option value="pending">待处理</option>
+              <option value="processing">处理中</option>
+              <option value="completed">已完成</option>
+              <option value="cancelled">已取消</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <button class="btn btn-outline" id="filterBtn">
+              <i class="fas fa-filter"></i>
+              应用筛选
+            </button>
+          </div>
+        </div>
+
+        <!-- 订单数据面板 -->
+        <div class="panel orders-panel" id="ordersPanel">
+          <div class="panel-header">
+            <h3>订单列表</h3>
+            <div class="panel-controls" style="display:flex; justify-content:center;">
+              <div class="search-controls" style="display:flex; gap:12px; align-items:center; justify-content:center; padding:12px 0;">
+                <input id="uidInput" class="form-input" style="width:120px;" value="10001" placeholder="用户ID" />
+                <input id="pageInput" class="form-input" style="width:80px;" value="1" placeholder="页码" />
+                <button id="loadBtn" class="btn btn-primary" style="min-width:140px; display:inline-flex; align-items:center; justify-content:center; text-align:center;">加载订单</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="loading-skeleton" id="loadingSkeleton">
+            <div class="skeleton-table">
+              <div class="skeleton-row"></div>
+              <div class="skeleton-row"></div>
+              <div class="skeleton-row"></div>
+              <div class="skeleton-row"></div>
+              <div class="skeleton-row"></div>
+            </div>
+          </div>
+
+          <div class="orders-table-container" id="ordersContainer" style="display:none;">
+            <table class="orders-table" id="ordersTable">
+              <thead>
+                <tr>
+                  <th>订单号</th>
+                  <th>商品信息</th>
+                  <th>用户</th>
+                  <th>金额</th>
+                  <th>状态</th>
+                  <th>创建时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody">
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination" id="pagination" style="display:none;">
+            <button class="page-btn" id="prevPage">上一页</button>
+            <div class="page-numbers" id="pageNumbers"></div>
+            <button class="page-btn" id="nextPage">下一页</button>
+          </div>
+
+          <div id="status" class="status-message">状态：未请求</div>
+        </div>
+
+        
+      </div>
+    </main>
+
+    <!-- 订单详情模态框 -->
+    <div class="modal" id="orderModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>订单详情</h3>
+          <button class="modal-close" id="modalClose">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+          <!-- 订单详情内容将在这里动态加载 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast提示 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    
+    <script type="module" src="./vendor.js"></script>
+    <script type="module" src="./security.js"></script>
+    <script type="module" src="./app.js"></script>
+    <script type="module" src="./shopplus-ui.js"></script>
+  </body>
+  </html>

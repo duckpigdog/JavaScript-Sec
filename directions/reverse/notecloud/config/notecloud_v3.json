@@ -1,0 +1,41 @@
+{
+  "version": "3.0.0",
+  "name": "NoteCloud",
+  "description": "在线笔记同步服务",
+  "api": {
+    "base_url": "/api/v3",
+    "timeout": 30000,
+    "retry_count": 3
+  },
+  "features": {
+    "sync": {
+      "auto_sync": true,
+      "sync_interval": 300000,
+      "max_notes_per_request": 50
+    },
+    "cache": {
+      "enabled": true,
+      "ttl": 3600000,
+      "max_size": 100
+    },
+    "search": {
+      "enabled": true,
+      "min_length": 2,
+      "max_results": 100
+    }
+  },
+  "ui": {
+    "theme": "modern",
+    "animations": true,
+    "dark_mode": false,
+    "font_size": 14,
+    "language": "zh-CN"
+  },
+  "security": {
+    "signature_timeout": 300,
+    "max_requests_per_minute": 60,
+    "enable_cors": true,
+    "allowed_origins": ["*"]
+  },
+  "sec": "SEC|v=3&salt=NC_V3_SALT&key=NC_K3Y_2025&mix=1&nonce=default"
+}

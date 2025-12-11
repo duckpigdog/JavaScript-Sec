@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoteCloud · 笔记同步</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --primary-dark: #5b21b6;
+            --secondary: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --background: #0f172a;
+            --surface: #0b1220;
+            --panel: #111827;
+            --text-primary: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --border: #1f2937;
+            --shadow: 0 10px 30px rgba(0,0,0,0.45);
+            --radius: 10px;
+            --radius-lg: 14px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: radial-gradient(1200px 500px at 20% -10%, rgba(124,58,237,0.25), transparent),
+                        radial-gradient(1200px 500px at 120% 110%, rgba(34,197,94,0.15), transparent),
+                        var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: transparent;
+            padding: 24px 0 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 16px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-brand .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.35);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .brand-info h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .brand-info .tagline {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 20px 40px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background: var(--panel);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.2px;
+            margin: 0 0 12px 0;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .sync-controls {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .input-field {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            transition: all 0.2s;
+            background: var(--surface);
+            color: #ffffff;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .notes-container {
+            background: var(--panel);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .notes-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .notes-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .notes-list {
+            min-height: 400px;
+        }
+
+        .note-item {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .note-item:hover {
+            background-color: rgba(124,58,237,0.06);
+            border-color: rgba(124,58,237,0.35);
+        }
+
+        .note-item:last-child {
+            border-bottom: none;
+        }
+
+        .note-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .note-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .note-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .note-content {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-message {
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            margin-top: 16px;
+        }
+
+        .status-message.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--secondary);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .status-message.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 16px;
+            }
+            
+            .main-container { padding: 20px 16px; }
+            .layout { grid-template-columns: 1fr; }
+        }
+            
+            .sync-section {
+                padding: 24px 20px;
+            }
+            
+            .sync-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .notes-header {
+                padding: 20px 24px;
+            }
+            
+            .note-item {
+                padding: 16px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="logo">NC</div>
+                <div class="brand-info">
+                    <h1>NoteCloud</h1>
+                    <p class="tagline">云端 · 极简 · 同步</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="layout">
+            <aside class="sidebar">
+                <h2 class="section-title">同步控制</h2>
+                <div class="sync-controls">
+                    <div class="input-group">
+                        <label class="input-label">用户ID</label>
+                        <input type="text" id="userId" class="input-field" placeholder="输入用户ID" value="user123">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">页码</label>
+                        <input type="number" id="pageNum" class="input-field" placeholder="页码" value="1" min="1">
+                    </div>
+                    <button id="syncBtn" class="btn btn-primary" style="justify-content:center;">
+                        <span>🔄</span>
+                        同步笔记
+                    </button>
+                    <button id="clearBtn" class="btn btn-secondary" style="justify-content:center;">
+                        <span>🗑️</span>
+                        清空
+                    </button>
+                    <div id="statusMessage" class="status-message hidden"></div>
+                </div>
+            </aside>
+
+            <section class="notes-container">
+                <div class="notes-header">
+                    <h3 class="notes-title">我的笔记</h3>
+                    <span id="notesCount" class="notes-count">0 条笔记</span>
+                </div>
+                <div class="notes-list">
+                    <div id="loading" class="loading">
+                        <div class="spinner"></div>
+                        <p>正在同步笔记...</p>
+                    </div>
+                    <div id="notesList" class="notes-content"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- 隐藏的分析数据 -->
+    <script type="application/json" id="analytics-data">
+        {"tracking_id":"nc_v3_2025","session_duration":0,"page_views":1,"user_agent":""}
+    </script>
+
+    <!-- 核心脚本文件 -->
+    <script src="vendor.js"></script>
+    <script src="config.js"></script>
+    <script src="analytics.js"></script>
+    <script src="guard.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

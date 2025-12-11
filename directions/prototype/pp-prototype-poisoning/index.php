@@ -49,7 +49,7 @@ if (isset($_GET['ajax'])) {
         if ($hasPwn) {
             echo json_encode([
                 'result' => '检测到 __proto__.polluted === "yes"',
-                'flag' => 'FLAG{PP_SIMPLE_POLLUTION}'
+                'flag' => 'flag{7a4e3f1c-8b29-42d6-a0c5-9e3f2b1d8765}'
             ], JSON_UNESCAPED_UNICODE);
         } else {
             echo json_encode([
@@ -106,7 +106,7 @@ if (isset($_GET['ajax'])) {
 
         <section id="secretPanel" class="panel hidden" style="margin-top:16px;">
           <div class="hint">受保护的内容</div>
-          <div style="margin-top:8px;">CTF Flag：<span style="color: var(--accent)">FLAG{PP_SIMPLE_POLLUTION}</span></div>
+          <div style="margin-top:8px;">CTF Flag：<span style="color: var(--accent)">flag{7a4e3f1c-8b29-42d6-a0c5-9e3f2b1d8765}</span></div>
         </section>
       </main>
     </div>

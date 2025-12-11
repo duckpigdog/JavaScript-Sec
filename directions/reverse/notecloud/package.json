@@ -1,0 +1,27 @@
+{
+  "name": "notecloud-challenge",
+  "version": "1.0.0",
+  "description": "NoteCloud - JavaScript逆向工程挑战第二关",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "javascript",
+    "reverse-engineering",
+    "challenge",
+    "notecloud",
+    "security"
+  ],
+  "author": "NoteCloud Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
